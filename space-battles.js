@@ -25,14 +25,15 @@ const alien = {
 
 const playerAttack = () =>{
     if(alien.hull > 0 && Math.random() < mothership.accuracy){
-        console.log(mothership.name,'fires torpedos and HITS for',mothership.firepower,'damage.')
+        alert('The ' + alien.name + ' has ' + alien.hull + ' HP.')
+        alert(mothership.name + ' fires torpedos and HITS for ' + mothership.firepower + ' damage.')
         alien.hull -= mothership.firepower
         } 
     else if (alien.hull <= 0){
-        console.log('The',alien.name,'has been ERADICATED!')
+        alert('The ' + alien.name + ' has been ERADICATED!')
         } 
     else {
-        console.log(mothership.name,'fires torpedos and MISSES')
+        alert(mothership.name + ' fires torpedos and MISSES')
     }
 }
 
@@ -40,22 +41,37 @@ const playerAttack = () =>{
 
 const enemyAttack = () =>{
     if(mothership.hull > 0 && Math.random() < alien.accuracy){
-        console.log(alien.name,'blasts the Mothership with toxic slime and does',alien.firepower,'damage.')
+        alert(alien.name + ' blasts the Mothership with toxic slime and does ' + alien.firepower + ' damage.')
         mothership.hull -= alien.firepower
         } 
     else if (mothership.hull <= 0){
-        console.log('The Mothership has been incinerated.  Game over')
+        alert('The Mothership has been incinerated.  Game over')
         } 
     else {
-        console.log(alien.name,'tries to ram the Mothership and MISSES')
+        alert(alien.name + ' tries to ram the Mothership and MISSES')
     }
 }
 
 
-for(i = 0; i < 5; i++){
-playerAttack()
-enemyAttack()
+runGame = () => {
+    alert("It's time for a space battle")
+    alert("An alien raider approaches...")
+
+    while (mothership.hull > 0 && alien.hull > 0) {
+    
+    let userInput = prompt("You have " + mothership.hull + " HP. Type 'attack' to blast the alien, or 'run' to cower in fear")
+
+    if (userInput.toLowerCase() === 'attack'){
+        playerAttack()
+        enemyAttack()
+    } else if (userInput.toLowerCase() === 'run'){
+        alert('You try to run, but the aliens are faster.   They mercilessly destroy the Mothership')
+        alert('GAME OVER')
+        mothership.hull = 0
+        break;
+    }
+}
 }
 
-
+runGame()
 
