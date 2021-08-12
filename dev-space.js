@@ -4,7 +4,11 @@
 
 function randomNumBetween(min,max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
-} 
+}
+
+// Initialize a gameOver state as false
+
+var gameOver = false
 
 // Class to generate player and enemy ships
 
@@ -25,13 +29,21 @@ class Ship {
     // Pass a ship object into this method to attack it
   
     attack(ship) {
-        if (Math.random() < this.accuracy) {
-            console.log('The ' + ship.name + ' has ' + ship.hull + ' HP.')
-            console.log(this.name + ' attacks and HITS for ' + this.firepower + ' damage.')
-            ship.hull -= this.firepower
+        ship.hull -= this.firepower
+        }
+
+    hits() {
+        console.log(`The ${this.name} has ${this.hull} HP.`)
+        console.log(`${this.name} attacks and HITS for ${this.firepower} damage!`)
+    }
+
+    missOrDead() {
+        if (this.hull > 0) {
+            console.log(`The ${this.name} has ${this.hull} HP.`)
+            console.log(`${mothership.name} attacks and MISSES!`)
         } else {
-                    console.log(this.name + ' attacks and MISSES')
-                }
+            console.log(`${this.name} has been DESTROYED`)
+        }
     }
   
   }
@@ -40,8 +52,8 @@ class Ship {
 
 const mothership = new Ship(
     'Mothership',
-    20,
-    5,
+    10,
+    4,
     .8)
 
 const alien = new Ship(
@@ -62,66 +74,96 @@ const alien3 = new Ship(
     randomNumBetween(2,4),
     (randomNumBetween(6,8) / 10))
 
+const alien4 = new Ship(
+    'Alien Outrider',
+    randomNumBetween(3,5),
+    randomNumBetween(2,4),
+    (randomNumBetween(6,8) / 10))
+
+const alien5 = new Ship(
+    'Mutated Alien',
+    randomNumBetween(3,5),
+    randomNumBetween(2,4),
+    (randomNumBetween(6,8) / 10))
+
+const alien6 = new Ship(
+    'Alien Striker',
+    randomNumBetween(3,5),
+    randomNumBetween(2,4),
+    (randomNumBetween(6,8) / 10))
+
 // 
 
-const fleet = [alien,alien2,alien3]
+const fleet = [alien,alien2,alien3,alien4,alien5,alien6]
 
 console.log(fleet,mothership)
 
-// alert("It's time for a space battle")
-// alert("An alien raider approaches...")
+// If the player passes an accuracy check, they attack the enemy
+// If they fail the check, the attack will miss
 
-while (fleet.length > 0) {
-    if (fleet[0].hull > 0){
-        
+playerAttack = () => {
+    if (Math.random() < mothership.accuracy) {
+        mothership.hits()
         mothership.attack(fleet[0])
-        fleet[0].attack(mothership)
         
-    } else {
+    } 
+    else{
+            mothership.missOrDead()
+        }
+}
+
+// If the enemy has a hull and passes an accuracy check, it attacks.
+// If the enemy has a hull and fails the check, its attack will miss
+// If the enemy has no hull the player is notified it has been destroyed
+// A destroyed enemy is no longer part of the alien fleet[]
+
+
+enemyAttack = () => {
+    if(fleet[0].hull > 0){
+        if (Math.random() < fleet[0].accuracy){
+            fleet[0].hits()
+            fleet[0].attack(mothership)
+        } 
+        else {
+            console.log(`${fleet[0].name} attacks and MISSES!`)
+        } 
+    }
+    else{
+        console.log(`${fleet[0].name} has been DESTROYED!`)
         fleet.shift()
     }
 }
 
+// alert("It's time for a space battle")
+// alert("An alien raider approaches...")
+
+// Main game engine
+
+
+while (fleet.length > 0 && gameOver == false) {
+    
+    if (mothership.hull > 0){    
+        playerAttack()
+        
+        enemyAttack()
+    } 
+    else {
+        return gameOver = true
+    } 
+   
+}
+
+console.log(`GAME OVER`)
+
+
+// GLITCH:   Only returns game over when player kills all aliens, but not when aliens kill 
+// its because playerAttack needs formatted same way as enemyAttack
 
 
 
 
 
-
-
-
-// Player attack phase
-
-// const playerAttack = () =>{
-//     if(alien.hull > 0 && Math.random() < mothership.accuracy){
-//         alert('The ' + alien.name + ' has ' + alien.hull + ' HP.')
-//         alert(mothership.name + ' fires torpedos and HITS for ' + mothership.firepower + ' damage.')
-//         alien.hull -= mothership.firepower
-//         } 
-//     else if (alien.hull <= 0){
-//         alert('The ' + alien.name + ' has been ERADICATED!')
-//         } 
-//     else {
-//         alert(mothership.name + ' fires torpedos and MISSES')
-//     }
-// }
-
-// // Enemy attack phase
-
-// const enemyAttack = () =>{
-//     if(mothership.hull > 0 && Math.random() < alien.accuracy){
-//         alert(alien.name + ' blasts the Mothership with toxic slime and does ' + alien.firepower + ' damage.')
-//         mothership.hull -= alien.firepower
-//         } 
-//     else if (mothership.hull <= 0){
-//         alert('The Mothership has been incinerated.  Game over')
-//         } 
-//     else {
-//         alert(alien.name + ' tries to ram the Mothership and MISSES')
-//     }
-// }
-
-
+ 
 // runGame = () => {
 //     alert("It's time for a space battle")
 //     alert("An alien raider approaches...")
