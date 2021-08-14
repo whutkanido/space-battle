@@ -1,5 +1,3 @@
-// this is a dev file for trying new things
-
 // Generate a random whole number between min,max
 
 function randomNumBetween(min,max) {
@@ -32,10 +30,15 @@ class Ship {
         ship.hull -= this.firepower
         }
 
+    // Informs player about HP levels and attack damage    
+
     hits(ship) {
         alert(`${this.name} has ${this.hull} HP. ${ship.name} has ${ship.hull} HP`)
         alert(`${this.name} attacks and HITS for ${this.firepower} damage!`)
     }
+
+    // If player failed the accuracy check, show the player an attack miss
+    // If player is dead, show their ship as destroyed
 
     missOrDead(ship) {
         if (this.hull > 0) {
@@ -92,7 +95,7 @@ const alien6 = new Ship(
     randomNumBetween(2,4),
     (randomNumBetween(6,8) / 10))
 
-// 
+// Create an array for the squad of aliens
 
 const fleet = [alien,alien2,alien3,alien4,alien5,alien6]
 
@@ -100,6 +103,7 @@ const fleet = [alien,alien2,alien3,alien4,alien5,alien6]
 
 // If the player passes an accuracy check, they attack the enemy
 // If they fail the check, the attack will miss
+// If the player has no HP, it's game over
 
 playerAttack = () => {
     if(mothership.hull > 0) {
@@ -177,33 +181,7 @@ alert(`GAME OVER`)
 runGame()
 
 
-// GLITCH:   Only returns game over when player kills all aliens, but not when aliens kill 
-// its because playerAttack needs formatted same way as enemyAttack
-
-
 
 
 
  
-// runGame = () => {
-//     alert("It's time for a space battle")
-//     alert("An alien raider approaches...")
-
-//     while (mothership.hull > 0 && alien.hull > 0) {
-    
-//     let userInput = prompt("You have " + mothership.hull + " HP. Type 'attack' to blast the alien, or 'run' to cower in fear")
-
-//     if (userInput.toLowerCase() === 'attack'){
-//         playerAttack()
-//         enemyAttack()
-//     } else if (userInput.toLowerCase() === 'run'){
-//         alert('You try to run, but the aliens are faster.   They mercilessly destroy the Mothership')
-//         alert('GAME OVER')
-//         mothership.hull = 0
-//         break;
-//     }
-// }
-// }
-
-// runGame()
-
