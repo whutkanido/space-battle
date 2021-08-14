@@ -33,16 +33,16 @@ class Ship {
         }
 
     hits(ship) {
-        alert(`${this.name} has ${this.hull} HP. ${ship.name} has ${ship.hull} HP`)
-        alert(`${this.name} attacks and HITS for ${this.firepower} damage!`)
+        console.log(`${this.name} has ${this.hull} HP. ${ship.name} has ${ship.hull} HP`)
+        console.log(`${this.name} attacks and HITS for ${this.firepower} damage!`)
     }
 
     missOrDead(ship) {
         if (this.hull > 0) {
-            alert(`${this.name} has ${this.hull} HP. ${ship.name} has ${ship.hull} HP.`)
-            alert(`${this.name} attacks and MISSES!`)
+            console.log(`${this.name} has ${this.hull} HP. ${ship.name} has ${ship.hull} HP.`)
+            console.log(`${this.name} attacks and MISSES!`)
         } else {
-            alert(`${this.name} has been DESTROYED`)
+            console.log(`${this.name} has been DESTROYED`)
         }
     }
   
@@ -96,7 +96,7 @@ const alien6 = new Ship(
 
 const fleet = [alien,alien2,alien3,alien4,alien5,alien6]
 
-
+console.log(fleet,mothership)
 
 // If the player passes an accuracy check, they attack the enemy
 // If they fail the check, the attack will miss
@@ -112,7 +112,7 @@ playerAttack = () => {
                 mothership.missOrDead(fleet[0])
             }
     } else {
-        alert(`GAME OVER`)
+        console.log(`GAME OVER`)
     }
 }
 
@@ -129,27 +129,38 @@ enemyAttack = () => {
             fleet[0].attack(mothership)
         } 
         else {
-            alert(`${fleet[0].name} attacks and MISSES!`)
+            console.log(`${fleet[0].name} attacks and MISSES!`)
         } 
     }
     else{
-        alert(`${fleet[0].name} has been DESTROYED!`)
+        console.log(`${fleet[0].name} has been DESTROYED!`)
         fleet.shift()
     }
 }
 
-runGame = () =>{
-
-alert("It's time for a space battle")
-alert("An alien raider approaches...")
+// alert("It's time for a space battle")
+// alert("An alien raider approaches...")
  
 // Main game engine
 
 
+let userInput = prompt("You have " + mothership.hull + " HP. Type 'attack' to blast the alien, or 'run' to cower in fear")
 
-while (fleet.length > 0 && mothership.hull > 0 && gameOver == false) {
+    if (userInput.toLowerCase() === 'attack'){
+        playerAttack()
+        enemyAttack()
+    } else if (userInput.toLowerCase() === 'run'){
+        alert('You try to run, but the aliens are faster.   They mercilessly destroy the Mothership')
+        alert('GAME OVER')
+        return gameOver = true
+        
+    }
 
-    let userInput = prompt(`You have ${mothership.hull} HP.  The ${fleet[0].name} has ${fleet[0].hull} HP. Type 'attack' to blast the alien, or 'run' to cower in fear`)
+
+
+while (fleet.length > 0 && gameOver == false) {
+
+    let userInput = prompt("You have " + mothership.hull + " HP. Type 'attack' to blast the alien, or 'run' to cower in fear")
     
     if (userInput.toLowerCase() === 'attack'){
     
@@ -162,19 +173,11 @@ while (fleet.length > 0 && mothership.hull > 0 && gameOver == false) {
         playerAttack()
         return gameOver = true
     } 
-} else if (userInput.toLowerCase() === 'run'){
-    alert('You try to run, but the aliens are faster.   They mercilessly destroy the Mothership')
-    alert('GAME OVER')
-    return gameOver = true
-    
 }
    
 }
 
-alert(`GAME OVER`)
-}
-
-runGame()
+console.log(`GAME OVER`)
 
 
 // GLITCH:   Only returns game over when player kills all aliens, but not when aliens kill 
